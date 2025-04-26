@@ -61,8 +61,8 @@ function generateDivisionQuestion(steps = 2, maxDigits = 3) {
 }
 
 function generateTableQuestion() {
-  const tableOf = Math.floor(Math.random() * 20) + 1; // 1 to 20
-  const multiplier = Math.floor(Math.random() * 10) + 1; // 1 to 10
+  const tableOf = Math.floor(Math.random() * 20) + 1;
+  const multiplier = Math.floor(Math.random() * 10) + 1;
   return {
     question: `${tableOf} × ${multiplier}`,
     answer: tableOf * multiplier,
@@ -194,16 +194,33 @@ function showNextQuestion(type) {
       <p><strong>Question ${questionCount + 1}:</strong> ${question}</p>
       <input type="number" id="userInput" placeholder="Your answer" />
       <button id="submitAnswer">Submit</button>
+      <div id="feedback" class="feedback"></div>
     </div>
   `;
 
   document.getElementById("submitAnswer").addEventListener("click", () => {
     const userInput = parseInt(document.getElementById("userInput").value);
+    const feedbackDiv = document.getElementById("feedback");
+
+    if (isNaN(userInput)) {
+      feedbackDiv.innerHTML = `<span style="color: orange;">⚠️ Please enter a number.</span>`;
+      return;
+    }
+
     if (userInput === currentAnswer) {
       score++;
+      feedbackDiv.innerHTML = `<span style="color: green;">✅ Correct!</span>`;
+      setTimeout(() => {
+        questionCount++;
+        showNextQuestion(type);
+      }, 200);
+    } else {
+      feedbackDiv.innerHTML = `<span style="color: red;">❌ Incorrect. Correct answer: ${currentAnswer}</span>`;
+      setTimeout(() => {
+        questionCount++;
+        showNextQuestion(type);
+      }, 1000);
     }
-    questionCount++;
-    showNextQuestion(type);
   });
 }
 

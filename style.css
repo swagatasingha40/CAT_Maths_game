@@ -99,3 +99,8 @@ button:hover {
 .game-area button:active {
   transform: scale(0.98);
 }
+
+.feedback {
+  margin-top: 10px;
+  font-weight: bold;
+}
